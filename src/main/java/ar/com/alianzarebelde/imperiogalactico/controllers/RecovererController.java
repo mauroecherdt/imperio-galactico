@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import ar.com.alianzarebelde.imperiogalactico.exceptions.InvalidRequestException;
+import ar.com.alianzarebelde.imperiogalactico.exceptions.SatelliteNotFoundException;
 import ar.com.alianzarebelde.imperiogalactico.exceptions.resolver.ErrorResponse;
 import ar.com.alianzarebelde.imperiogalactico.models.PayloadMessage;
 import ar.com.alianzarebelde.imperiogalactico.models.SpaceCraft;
@@ -31,7 +32,7 @@ public class RecovererController {
 			@ApiResponse(code = 200, message = "Se devuelve información de la nave.", response = SpaceCraft.class),
 			@ApiResponse(code = 400, message = "Request inválido.", response = ErrorResponse.class),
 			@ApiResponse(code = 500, message = "Error interno.", response = ErrorResponse.class)})
-	public SpaceCraft decodeInformation(@RequestBody PayloadMessage request) throws InvalidRequestException {
+	public SpaceCraft decodeInformation(@RequestBody PayloadMessage request) throws InvalidRequestException, SatelliteNotFoundException {
 		validate(request);
 		return recovererServices.decodeSpaceCraftInformation(request.getSatellites());
 	}

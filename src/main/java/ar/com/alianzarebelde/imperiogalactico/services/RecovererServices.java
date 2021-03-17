@@ -19,7 +19,7 @@ public interface RecovererServices {
 	 * @return
 	 * @throws InvalidRequestException
 	 */
-	public SpaceCraft decodeSpaceCraftInformation(List<Satellite> satellites) throws InvalidRequestException;
+	public SpaceCraft decodeSpaceCraftInformation(List<Satellite> satellites) throws InvalidRequestException, SatelliteNotFoundException;
 	
 	/**
 	 * 

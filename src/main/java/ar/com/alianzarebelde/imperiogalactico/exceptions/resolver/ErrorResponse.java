@@ -2,8 +2,6 @@ package ar.com.alianzarebelde.imperiogalactico.exceptions.resolver;
 
 import java.util.Date;
 
-import org.slf4j.MDC;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class ErrorResponse {

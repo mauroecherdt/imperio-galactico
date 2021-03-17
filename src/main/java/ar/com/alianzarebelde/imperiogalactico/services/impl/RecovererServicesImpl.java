@@ -29,10 +29,10 @@ public class RecovererServicesImpl implements RecovererServices{
 	private RecovererRepository recovererRepository;
 	
 	@Override
-	public SpaceCraft decodeSpaceCraftInformation(List<Satellite> satellites) throws InvalidRequestException {
-		Satellite kenobi = satellites.get(0);
-		Satellite skywalker = satellites.get(1);
-		Satellite sato = satellites.get(2);
+	public SpaceCraft decodeSpaceCraftInformation(List<Satellite> satellites) throws InvalidRequestException, SatelliteNotFoundException {
+		Satellite kenobi = getSatelliteByType(satellites, SatelliteType.KENOBI);
+		Satellite skywalker = getSatelliteByType(satellites, SatelliteType.SKYWALKER);
+		Satellite sato = getSatelliteByType(satellites, SatelliteType.SATO);
 		return decodeInformation(kenobi, skywalker, sato);
 	}
 
@@ -57,23 +57,6 @@ public class RecovererServicesImpl implements RecovererServices{
 		return decodeInformation(kenobi, skywalker, sato);
 	}
 
-	
-	private SpaceCraft decodeInformation(Satellite kenobi, Satellite skywalker, Satellite sato) throws InvalidRequestException {
-
-		SpaceCraft spaceCraft = null;
-		try {
-			Coordinate location = LocationResolver.getLocation(kenobi.getDistance(), skywalker.getDistance(), sato.getDistance());
-			String message = MessageResolver.getMessage(kenobi.getMessage(), skywalker.getMessage(), sato.getMessage());
-			spaceCraft = new SpaceCraft(location, message);
-			
-		} catch (InvalidDistanceException | InvalidMessageException e) {
-			e.printStackTrace();
-			throw new InvalidRequestException(e.getMessage());
-		} 
-		
-		return spaceCraft;
-	}
-
 	@Override
 	public Satellite updateSatellite(SatelliteType name, Satellite satellite) throws SatelliteNotFoundException {
 		Satellite satelliteDb = recovererRepository.findByName(name).orElseThrow(() -> new SatelliteNotFoundException("Satelite " + name.getName() + " inexistente."));
@@ -87,5 +70,30 @@ public class RecovererServicesImpl implements RecovererServices{
 		Satellite satelliteDb = recovererRepository.findByName(name).orElseThrow(() -> new SatelliteNotFoundException("Satelite " + name.getName() + " inexistente."));
 		recovererRepository.delete(satelliteDb);
 	}
+	
+	
+	private SpaceCraft decodeInformation(Satellite kenobi, Satellite skywalker, Satellite sato) throws InvalidRequestException {
+
+		SpaceCraft spaceCraft = null;
+		try {
+			Coordinate location = LocationResolver.getLocation(kenobi.getDistance(), skywalker.getDistance(), sato.getDistance());
+			String message = MessageResolver.getMessage(kenobi.getMessage(), skywalker.getMessage(), sato.getMessage());
+			spaceCraft = new SpaceCraft(location.getX(), location.getY(), message);
+			
+		} catch (InvalidDistanceException | InvalidMessageException e) {
+			e.printStackTrace();
+			throw new InvalidRequestException(e.getMessage());
+		} 
+		
+		return spaceCraft;
+	}
+	
+	
+	private Satellite getSatelliteByType(List<Satellite> satellites, SatelliteType satelliteType) throws SatelliteNotFoundException {
+		return satellites.stream()
+				.filter(sat -> sat.getName().equals(satelliteType))
+				.findFirst()
+				.orElseThrow(() -> new SatelliteNotFoundException("Satelite " + satelliteType + " no encontrado."));
+	} 
 	
 }

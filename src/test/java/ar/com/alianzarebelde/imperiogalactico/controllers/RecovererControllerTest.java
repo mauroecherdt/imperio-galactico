@@ -31,7 +31,8 @@ class RecovererControllerTest {
 	final void testDecodeInformation() throws Exception {
 
 		String requestBody = "{\"satellites\":[{\"name\":\"kenobi\",\"distance\":100.0,\"message\":[\"este\",\"\",\"\",\"mensaje\",\"\"]},{\"name\":\"skywalker\",\"distance\":115.5,\"message\":[\"\",\"es\",\"\",\"\",\"secreto\"]},{\"name\":\"sato\",\"distance\":142.7,\"message\":[\"este\",\"\",\"un\",\"\",\"\"]}]}";
-		SpaceCraft spaceCraft = new SpaceCraft(new Coordinate(100f, 200f), "este es un mensaje secreto");
+		Coordinate coordinate = new Coordinate(100f, 200f);
+		SpaceCraft spaceCraft = new SpaceCraft(coordinate.getX(), coordinate.getY(), "este es un mensaje secreto");
 		Mockito.when(recovererServices.decodeSpaceCraftInformation(ArgumentMatchers.anyList())).thenReturn(spaceCraft);
 		
 		mvc.perform(post("/topsecret/")

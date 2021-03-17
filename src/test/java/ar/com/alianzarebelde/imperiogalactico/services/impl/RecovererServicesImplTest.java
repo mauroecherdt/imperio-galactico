@@ -1,10 +1,9 @@
 package ar.com.alianzarebelde.imperiogalactico.services.impl;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -34,7 +33,7 @@ class RecovererServicesImplTest {
 	private RecovererRepository recovererRepository;
 
 	@Test
-	final void testDecodeSpaceCraftInformation() throws InvalidRequestException {
+	final void testDecodeSpaceCraftInformation() throws InvalidRequestException, SatelliteNotFoundException {
 
 		Satellite s1 = new Satellite();
 		s1.setName(SatelliteType.KENOBI);

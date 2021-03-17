@@ -1,27 +1,27 @@
 package ar.com.alianzarebelde.imperiogalactico.models;
 
-import ar.com.alianzarebelde.messagerecovery.models.Coordinate;
-
 public class SpaceCraft {
 
-	private Coordinate position;
+	private Position position;
 	
 	private String message;
 
 	
-	public SpaceCraft(Coordinate position, String message) {
+	public SpaceCraft(float coordX, float coordY, String message) {
 		super();
-		this.position = position;
+		this.position = new Position(coordX, coordY);
 		this.message = message;
 	}
 
-	public Coordinate getPosition() {
+	public Position getPosition() {
 		return position;
 	}
 
-	public void setPosition(Coordinate position) {
+	public void setPosition(Position position) {
 		this.position = position;
 	}
+
+
 
 	public String getMessage() {
 		return message;
