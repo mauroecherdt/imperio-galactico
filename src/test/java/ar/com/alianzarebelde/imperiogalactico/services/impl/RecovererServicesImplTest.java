@@ -37,7 +37,7 @@ class RecovererServicesImplTest {
 
 		Satellite s1 = new Satellite();
 		s1.setName(SatelliteType.KENOBI);
-		s1.setDistance(400f);
+		s1.setDistance(600f);
 		s1.setMessage(new String[]{"este", "", "", "mensaje", ""});
 		
 		Satellite s2 = new Satellite();
@@ -47,7 +47,7 @@ class RecovererServicesImplTest {
 		
 		Satellite s3 = new Satellite();
 		s3.setName(SatelliteType.SATO);
-		s3.setDistance(200f);
+		s3.setDistance(500f);
 		s3.setMessage(new String[]{"este", "", "un", "", ""});
 		
 		SpaceCraft decodeSpaceCraftInformation = recovererServices.decodeSpaceCraftInformation(Arrays.asList(s1,s2,s3));
@@ -90,7 +90,7 @@ class RecovererServicesImplTest {
 	final void testGetSpaceCraftInformation() throws UnprocessableException, InvalidRequestException {
 		Satellite s1 = new Satellite();
 		s1.setName(SatelliteType.KENOBI);
-		s1.setDistance(400f);
+		s1.setDistance(600f);
 		s1.setMessage(new String[]{"este", "", "", "mensaje", ""});
 		
 		Satellite s2 = new Satellite();
@@ -100,7 +100,7 @@ class RecovererServicesImplTest {
 		
 		Satellite s3 = new Satellite();
 		s3.setName(SatelliteType.SATO);
-		s3.setDistance(200f);
+		s3.setDistance(500f);
 		s3.setMessage(new String[]{"este", "", "un", "", ""});
 		
 		Mockito.when(recovererRepository.findByName(SatelliteType.KENOBI)).thenReturn(Optional.of(s1));

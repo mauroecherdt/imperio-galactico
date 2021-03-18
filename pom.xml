@@ -9,14 +9,17 @@
 		<version>2.4.3</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
+	
 	<groupId>ar.com.alianzarebelde</groupId>
 	<artifactId>imperio-galactico</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.1</version>
 	<name>imperio-galactico</name>
-	<description>Libreria para recuperación de fuente y contenido de mensaje recibido.</description>
+	<description>Api REST para obtencion de coordenadas y recuperación de mensaje recibidos en los satelites Kenobi, Skywalker y Sato.</description>
+	
 	<properties>
 		<java.version>11</java.version>
 	</properties>
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -45,14 +48,9 @@
 			</exclusions>
 		</dependency>
 		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>ar.com.alianzarebelde</groupId>
 			<artifactId>spacecraft-recovery</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>1.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>io.springfox</groupId>
@@ -65,8 +63,6 @@
 			<version>2.9.2</version>
 		</dependency>
 
-		<!-->dependency> <groupId>com.h2database</groupId> <artifactId>h2</artifactId> 
-			</dependency -->
 	</dependencies>
 
 	<build>
