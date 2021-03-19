@@ -13,6 +13,8 @@ import ar.com.alianzarebelde.imperiogalactico.exceptions.resolver.ErrorResponse;
 import ar.com.alianzarebelde.imperiogalactico.models.PayloadMessage;
 import ar.com.alianzarebelde.imperiogalactico.models.SpaceCraft;
 import ar.com.alianzarebelde.imperiogalactico.services.RecovererServices;
+import ar.com.alianzarebelde.messagerecovery.exceptions.InvalidDistanceException;
+import ar.com.alianzarebelde.messagerecovery.exceptions.InvalidMessageException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -31,8 +33,9 @@ public class RecovererController {
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "Se devuelve información de la nave.", response = SpaceCraft.class),
 			@ApiResponse(code = 400, message = "Request inválido.", response = ErrorResponse.class),
+			@ApiResponse(code = 404, message = "No se pude determinar.", response = ErrorResponse.class),
 			@ApiResponse(code = 500, message = "Error interno.", response = ErrorResponse.class)})
-	public SpaceCraft decodeInformation(@RequestBody PayloadMessage request) throws InvalidRequestException, SatelliteNotFoundException {
+	public SpaceCraft decodeInformation(@RequestBody PayloadMessage request) throws InvalidRequestException, SatelliteNotFoundException, InvalidMessageException, InvalidDistanceException {
 		validate(request);
 		return recovererServices.decodeSpaceCraftInformation(request.getSatellites());
 	}

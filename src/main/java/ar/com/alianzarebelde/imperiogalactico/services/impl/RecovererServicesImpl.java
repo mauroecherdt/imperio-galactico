@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ar.com.alianzarebelde.imperiogalactico.enums.SatelliteType;
-import ar.com.alianzarebelde.imperiogalactico.exceptions.InvalidRequestException;
 import ar.com.alianzarebelde.imperiogalactico.exceptions.SatelliteAlreadyExistsException;
 import ar.com.alianzarebelde.imperiogalactico.exceptions.SatelliteNotFoundException;
 import ar.com.alianzarebelde.imperiogalactico.exceptions.UnprocessableException;
@@ -29,7 +28,7 @@ public class RecovererServicesImpl implements RecovererServices{
 	private RecovererRepository recovererRepository;
 	
 	@Override
-	public SpaceCraft decodeSpaceCraftInformation(List<Satellite> satellites) throws InvalidRequestException, SatelliteNotFoundException {
+	public SpaceCraft decodeSpaceCraftInformation(List<Satellite> satellites) throws SatelliteNotFoundException, InvalidMessageException, InvalidDistanceException {
 		Satellite kenobi = getSatelliteByType(satellites, SatelliteType.KENOBI);
 		Satellite skywalker = getSatelliteByType(satellites, SatelliteType.SKYWALKER);
 		Satellite sato = getSatelliteByType(satellites, SatelliteType.SATO);
@@ -50,11 +49,16 @@ public class RecovererServicesImpl implements RecovererServices{
 	}
 
 	@Override
-	public SpaceCraft getSpaceCraftInformation() throws UnprocessableException, InvalidRequestException {
-		Satellite kenobi = recovererRepository.findByName(SatelliteType.KENOBI).orElseThrow(() -> new UnprocessableException("Satelite " + SatelliteType.KENOBI + " no existe en la base."));
-		Satellite skywalker = recovererRepository.findByName(SatelliteType.SKYWALKER).orElseThrow(() -> new UnprocessableException("Satelite " + SatelliteType.SKYWALKER + " no existe en la base."));
-		Satellite sato = recovererRepository.findByName(SatelliteType.SATO).orElseThrow(() -> new UnprocessableException("Satelite " + SatelliteType.SATO + " no existe en la base."));
-		return decodeInformation(kenobi, skywalker, sato);
+	public SpaceCraft getSpaceCraftInformation() throws UnprocessableException {
+		try {
+			Satellite kenobi = recovererRepository.findByName(SatelliteType.KENOBI).orElseThrow(() -> new UnprocessableException("Satelite " + SatelliteType.KENOBI + " no existe en la base."));
+			Satellite skywalker = recovererRepository.findByName(SatelliteType.SKYWALKER).orElseThrow(() -> new UnprocessableException("Satelite " + SatelliteType.SKYWALKER + " no existe en la base."));
+			Satellite sato = recovererRepository.findByName(SatelliteType.SATO).orElseThrow(() -> new UnprocessableException("Satelite " + SatelliteType.SATO + " no existe en la base."));			
+			return decodeInformation(kenobi, skywalker, sato);
+		} catch (InvalidMessageException | InvalidDistanceException e) {
+			e.printStackTrace();
+			throw new UnprocessableException(e.getMessage());
+		}
 	}
 
 	@Override
@@ -72,20 +76,10 @@ public class RecovererServicesImpl implements RecovererServices{
 	}
 	
 	
-	private SpaceCraft decodeInformation(Satellite kenobi, Satellite skywalker, Satellite sato) throws InvalidRequestException {
-
-		SpaceCraft spaceCraft = null;
-		try {
-			Coordinate location = LocationResolver.getLocation(kenobi.getDistance(), skywalker.getDistance(), sato.getDistance());
-			String message = MessageResolver.getMessage(kenobi.getMessage(), skywalker.getMessage(), sato.getMessage());
-			spaceCraft = new SpaceCraft(location.getX(), location.getY(), message);
-			
-		} catch (InvalidDistanceException | InvalidMessageException e) {
-			e.printStackTrace();
-			throw new InvalidRequestException(e.getMessage());
-		} 
-		
-		return spaceCraft;
+	private SpaceCraft decodeInformation(Satellite kenobi, Satellite skywalker, Satellite sato) throws InvalidMessageException, InvalidDistanceException {
+		Coordinate location = LocationResolver.getLocation(kenobi.getDistance(), skywalker.getDistance(), sato.getDistance());
+		String message = MessageResolver.getMessage(kenobi.getMessage(), skywalker.getMessage(), sato.getMessage());
+		return new SpaceCraft(location.getX(), location.getY(), message);
 	}
 	
 	

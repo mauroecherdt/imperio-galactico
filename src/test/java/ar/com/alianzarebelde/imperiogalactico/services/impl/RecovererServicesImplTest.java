@@ -22,6 +22,8 @@ import ar.com.alianzarebelde.imperiogalactico.models.Satellite;
 import ar.com.alianzarebelde.imperiogalactico.models.SpaceCraft;
 import ar.com.alianzarebelde.imperiogalactico.repository.RecovererRepository;
 import ar.com.alianzarebelde.imperiogalactico.services.RecovererServices;
+import ar.com.alianzarebelde.messagerecovery.exceptions.InvalidDistanceException;
+import ar.com.alianzarebelde.messagerecovery.exceptions.InvalidMessageException;
 
 @SpringBootTest
 class RecovererServicesImplTest {
@@ -33,7 +35,7 @@ class RecovererServicesImplTest {
 	private RecovererRepository recovererRepository;
 
 	@Test
-	final void testDecodeSpaceCraftInformation() throws InvalidRequestException, SatelliteNotFoundException {
+	final void testDecodeSpaceCraftInformation() throws InvalidRequestException, SatelliteNotFoundException, InvalidMessageException, InvalidDistanceException {
 
 		Satellite s1 = new Satellite();
 		s1.setName(SatelliteType.KENOBI);
@@ -87,7 +89,7 @@ class RecovererServicesImplTest {
 	}
 
 	@Test
-	final void testGetSpaceCraftInformation() throws UnprocessableException, InvalidRequestException {
+	final void testGetSpaceCraftInformation() throws UnprocessableException, InvalidRequestException, InvalidMessageException, InvalidDistanceException {
 		Satellite s1 = new Satellite();
 		s1.setName(SatelliteType.KENOBI);
 		s1.setDistance(600f);

@@ -9,6 +9,8 @@ import ar.com.alianzarebelde.imperiogalactico.exceptions.SatelliteNotFoundExcept
 import ar.com.alianzarebelde.imperiogalactico.exceptions.UnprocessableException;
 import ar.com.alianzarebelde.imperiogalactico.models.Satellite;
 import ar.com.alianzarebelde.imperiogalactico.models.SpaceCraft;
+import ar.com.alianzarebelde.messagerecovery.exceptions.InvalidDistanceException;
+import ar.com.alianzarebelde.messagerecovery.exceptions.InvalidMessageException;
 
 public interface RecovererServices {
 
@@ -19,7 +21,7 @@ public interface RecovererServices {
 	 * @return
 	 * @throws InvalidRequestException
 	 */
-	public SpaceCraft decodeSpaceCraftInformation(List<Satellite> satellites) throws InvalidRequestException, SatelliteNotFoundException;
+	public SpaceCraft decodeSpaceCraftInformation(List<Satellite> satellites) throws SatelliteNotFoundException, InvalidMessageException, InvalidDistanceException;
 	
 	/**
 	 * 
@@ -52,7 +54,7 @@ public interface RecovererServices {
 	 * 
 	 * @return
 	 */
-	public SpaceCraft getSpaceCraftInformation() throws UnprocessableException, InvalidRequestException;
+	public SpaceCraft getSpaceCraftInformation() throws UnprocessableException;
 	
 	
 }
