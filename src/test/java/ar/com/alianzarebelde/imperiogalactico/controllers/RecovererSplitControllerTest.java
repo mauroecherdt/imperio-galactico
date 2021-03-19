@@ -1,6 +1,5 @@
 package ar.com.alianzarebelde.imperiogalactico.controllers;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -16,9 +15,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import ar.com.alianzarebelde.imperiogalactico.enums.SatelliteType;
-import ar.com.alianzarebelde.imperiogalactico.exceptions.InvalidRequestException;
-import ar.com.alianzarebelde.imperiogalactico.exceptions.SatelliteAlreadyExistsException;
-import ar.com.alianzarebelde.imperiogalactico.exceptions.UnprocessableException;
 import ar.com.alianzarebelde.imperiogalactico.models.Satellite;
 import ar.com.alianzarebelde.imperiogalactico.models.SpaceCraft;
 import ar.com.alianzarebelde.imperiogalactico.services.RecovererServices;
@@ -53,7 +49,8 @@ class RecovererSplitControllerTest {
 
 	@Test
 	final void testGetDecodeSatellites() throws Exception {
-		SpaceCraft spaceCraft = new SpaceCraft(new Coordinate(100f, 200f), "este es un mensaje secreto");
+		Coordinate coordinate = new Coordinate(100f, 200f);
+		SpaceCraft spaceCraft = new SpaceCraft(coordinate.getX(), coordinate.getY(), "este es un mensaje secreto");
 		
 		Mockito.when(recovererServices.getSpaceCraftInformation()).thenReturn(spaceCraft);
 		

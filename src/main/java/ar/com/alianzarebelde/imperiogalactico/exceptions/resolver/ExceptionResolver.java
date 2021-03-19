@@ -15,6 +15,8 @@ import ar.com.alianzarebelde.imperiogalactico.exceptions.InvalidSatelliteExcepti
 import ar.com.alianzarebelde.imperiogalactico.exceptions.SatelliteAlreadyExistsException;
 import ar.com.alianzarebelde.imperiogalactico.exceptions.SatelliteNotFoundException;
 import ar.com.alianzarebelde.imperiogalactico.exceptions.UnprocessableException;
+import ar.com.alianzarebelde.messagerecovery.exceptions.InvalidDistanceException;
+import ar.com.alianzarebelde.messagerecovery.exceptions.InvalidMessageException;
 
 
 @ControllerAdvice
@@ -73,6 +75,27 @@ public class ExceptionResolver extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<ErrorResponse>(exceptionResponse, HttpStatus.CONFLICT);
 	}
 
+	@ExceptionHandler(InvalidDistanceException.class)
+	public final ResponseEntity<ErrorResponse> handleInvalidDistanceException(InvalidDistanceException ex,
+			WebRequest request) {
+		logger.error(ex.getMessage());
+		
+		ErrorResponse exceptionResponse = new ErrorResponse("INVALID", "No es posible determinar la ubicación."
+				, request.getDescription(false));
+		return new ResponseEntity<ErrorResponse>(exceptionResponse, HttpStatus.NOT_FOUND);
+	}
+	
+	@ExceptionHandler(InvalidMessageException.class)
+	public final ResponseEntity<ErrorResponse> handleInvalidMessageException(InvalidMessageException ex,
+			WebRequest request) {
+		logger.error(ex.getMessage());
+		
+		ErrorResponse exceptionResponse = new ErrorResponse("INVALID", "No es posible determinar el mensaje."
+				, request.getDescription(false));
+		return new ResponseEntity<ErrorResponse>(exceptionResponse, HttpStatus.NOT_FOUND);
+	}
+	
+	
 	@ExceptionHandler(Exception.class)
 	public final ResponseEntity<ErrorResponse> handleInternalServerError(Exception ex, WebRequest request) {
 		ex.printStackTrace();

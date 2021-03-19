@@ -1,10 +1,9 @@
 package ar.com.alianzarebelde.imperiogalactico.services.impl;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -23,6 +22,8 @@ import ar.com.alianzarebelde.imperiogalactico.models.Satellite;
 import ar.com.alianzarebelde.imperiogalactico.models.SpaceCraft;
 import ar.com.alianzarebelde.imperiogalactico.repository.RecovererRepository;
 import ar.com.alianzarebelde.imperiogalactico.services.RecovererServices;
+import ar.com.alianzarebelde.messagerecovery.exceptions.InvalidDistanceException;
+import ar.com.alianzarebelde.messagerecovery.exceptions.InvalidMessageException;
 
 @SpringBootTest
 class RecovererServicesImplTest {
@@ -34,11 +35,11 @@ class RecovererServicesImplTest {
 	private RecovererRepository recovererRepository;
 
 	@Test
-	final void testDecodeSpaceCraftInformation() throws InvalidRequestException {
+	final void testDecodeSpaceCraftInformation() throws InvalidRequestException, SatelliteNotFoundException, InvalidMessageException, InvalidDistanceException {
 
 		Satellite s1 = new Satellite();
 		s1.setName(SatelliteType.KENOBI);
-		s1.setDistance(400f);
+		s1.setDistance(600f);
 		s1.setMessage(new String[]{"este", "", "", "mensaje", ""});
 		
 		Satellite s2 = new Satellite();
@@ -48,7 +49,7 @@ class RecovererServicesImplTest {
 		
 		Satellite s3 = new Satellite();
 		s3.setName(SatelliteType.SATO);
-		s3.setDistance(200f);
+		s3.setDistance(500f);
 		s3.setMessage(new String[]{"este", "", "un", "", ""});
 		
 		SpaceCraft decodeSpaceCraftInformation = recovererServices.decodeSpaceCraftInformation(Arrays.asList(s1,s2,s3));
@@ -88,10 +89,10 @@ class RecovererServicesImplTest {
 	}
 
 	@Test
-	final void testGetSpaceCraftInformation() throws UnprocessableException, InvalidRequestException {
+	final void testGetSpaceCraftInformation() throws UnprocessableException, InvalidRequestException, InvalidMessageException, InvalidDistanceException {
 		Satellite s1 = new Satellite();
 		s1.setName(SatelliteType.KENOBI);
-		s1.setDistance(400f);
+		s1.setDistance(600f);
 		s1.setMessage(new String[]{"este", "", "", "mensaje", ""});
 		
 		Satellite s2 = new Satellite();
@@ -101,7 +102,7 @@ class RecovererServicesImplTest {
 		
 		Satellite s3 = new Satellite();
 		s3.setName(SatelliteType.SATO);
-		s3.setDistance(200f);
+		s3.setDistance(500f);
 		s3.setMessage(new String[]{"este", "", "un", "", ""});
 		
 		Mockito.when(recovererRepository.findByName(SatelliteType.KENOBI)).thenReturn(Optional.of(s1));

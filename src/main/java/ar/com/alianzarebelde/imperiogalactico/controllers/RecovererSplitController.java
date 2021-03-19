@@ -21,6 +21,8 @@ import ar.com.alianzarebelde.imperiogalactico.exceptions.resolver.ErrorResponse;
 import ar.com.alianzarebelde.imperiogalactico.models.Satellite;
 import ar.com.alianzarebelde.imperiogalactico.models.SpaceCraft;
 import ar.com.alianzarebelde.imperiogalactico.services.RecovererServices;
+import ar.com.alianzarebelde.messagerecovery.exceptions.InvalidDistanceException;
+import ar.com.alianzarebelde.messagerecovery.exceptions.InvalidMessageException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -56,7 +58,7 @@ public class RecovererSplitController {
 			@ApiResponse(code = 400, message = "Request inválido.", response = ErrorResponse.class),
 			@ApiResponse(code = 422, message = "No procesable.", response = ErrorResponse.class),
 			@ApiResponse(code = 500, message = "Error interno.", response = ErrorResponse.class)})
-	public SpaceCraft getDecodeSatellites() throws InvalidSatelliteException, InvalidRequestException, UnprocessableException {
+	public SpaceCraft getDecodeSatellites() throws UnprocessableException, InvalidMessageException, InvalidDistanceException {
 		return recovererServices.getSpaceCraftInformation();
 	}
 	
